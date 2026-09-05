@@ -1,0 +1,41 @@
+name: Bug report
+description: Something is broken in the RICHAT application
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What did you see? Include steps if you can reproduce it.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: input
+    id: image
+    attributes:
+      label: Image tag
+      description: Value of RICHAT_IMAGE, or `dotnetdummy/richat:latest` if unset.
+      placeholder: dotnetdummy/richat:2.0.0
+    validations:
+      required: true
+  - type: dropdown
+    id: setup
+    attributes:
+      label: How you run it
+      options:
+        - Docker Compose
+        - Portainer
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: extra
+    attributes:
+      label: Extra context
+      description: Logs (no secrets, emails, IPs, or push endpoints), reverse proxy, TURN, or browser.

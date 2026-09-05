@@ -1,0 +1,35 @@
+# Pull-only stack: app image from Docker Hub + PostgreSQL.
+#
+#   cp .env.example .env
+#   docker compose up -d
+
+services:
+  app:
+    image: ${RICHAT_IMAGE:-dotnetdummy/richat:latest}
+    restart: unless-stopped
+    ports:
+      - "${PORT:-1987}:1987"
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-richat}:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-richat}
+    depends_on:
+      postgres:
+        condition: service_healthy
+  postgres:
+    image: postgres:18.2-alpine
+    shm_size: 1g
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-richat}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-richat}
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata: {}
