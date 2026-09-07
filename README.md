@@ -56,7 +56,7 @@ Open `http://localhost:1987` (or your `APP_URL`) and sign in as `INITIAL_ADMIN`.
 
 Chat data lives in the `pgdata` volume. `GET /health` is the health check. Pending migrations run when the app starts.
 
-Override the image with `RICHAT_IMAGE` if you want a pinned tag (default `dotnetdummy/richat:latest`).
+Override the image with `RICHAT_IMAGE` if you want a pinned tag (default `dotnetdummy/richat:latest`). Testers can follow the `dev` branch with `dotnetdummy/richat:nightly`.
 
 ### Portainer
 
@@ -72,7 +72,7 @@ Terminate TLS in front of port 1987. Set `APP_URL` (and `AUTH_TRUSTED_ORIGINS` i
 docker compose pull && docker compose up -d
 ```
 
-Pending migrations run when the app starts. Pin `RICHAT_IMAGE` to a version if you do not want to follow `latest`.
+Pending migrations run when the app starts. Pin `RICHAT_IMAGE` to a version if you do not want to follow `latest`. Use `dotnetdummy/richat:nightly` to follow the `dev` branch.
 
 ## Voice TURN
 
@@ -104,7 +104,7 @@ Put these in `.env`. See `.env.example`.
 | `INITIAL_ADMIN`                                       | First setup                          | Email or Steam name of the first admin                |
 | `POSTGRES_USER` / `POSTGRES_DB`                       | No (default `richat`)                | Postgres role and database name                       |
 | `DB_MIGRATE_ON_START`                                 | No (default `true`)                  | Run pending migrations when the app starts            |
-| `RICHAT_IMAGE`                                        | No                                   | App image tag                                         |
+| `RICHAT_IMAGE`                                        | No                                   | App image (`latest`, a version, or `nightly`)         |
 | `EMAIL_SALT_ROUNDS`                                   | No (default `10`)                    | bcrypt rounds for hashed emails                       |
 | `MESSAGE_RETENTION_DAYS`                              | No (default `90`)                    | Last-edit age after which unpinned messages are deleted |
 | `PINNED_MESSAGE_RETENTION_DAYS`                       | No (default `365`)                   | Last-edit age after which pinned messages are deleted |
