@@ -5,6 +5,7 @@ Self-hosted Discord-style chat. This repository is the **install bundle** and th
 - **Run it:** Docker Compose in this repo pulls [`dotnetdummy/richat`](https://hub.docker.com/r/dotnetdummy/richat) and PostgreSQL.
 - **Product site:** [RICHAT.net](https://richat.net)
 - **Issues:** file bugs and requests here.
+- **Release notes:** [`CHANGELOG.md`](CHANGELOG.md)
 
 The app runs as a PWA. It supports public and private channels, threads, emoji reactions, custom emojis, GIF search, pinned messages, link previews, and push notifications. Voice is a huddle on an existing text channel (screen share, webcams, soundboard, party mode, poker, and pictionary).
 
@@ -72,7 +73,7 @@ Terminate TLS in front of port 1987. Set `APP_URL` (and `AUTH_TRUSTED_ORIGINS` i
 docker compose pull && docker compose up -d
 ```
 
-Pending migrations run when the app starts. Pin `RICHAT_IMAGE` to a version if you do not want to follow `latest`. Use `dotnetdummy/richat:nightly` to follow the `dev` branch.
+Pending migrations run when the app starts. Pin `RICHAT_IMAGE` to a version if you do not want to follow `latest`. Use `dotnetdummy/richat:nightly` to follow the `dev` branch. See [`CHANGELOG.md`](CHANGELOG.md) for what changed in each version.
 
 ## Voice TURN
 
