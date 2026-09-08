@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.1] - 2026-09-08
+
+### Added
+
+- `DATABASE_URL_ENV` to read the runtime Postgres URL from a differently named variable (default `DATABASE_URL`).
+- Optional `DATABASE_MIGRATE_URL` / `DATABASE_MIGRATE_URL_ENV` so boot migrations can use a different Postgres role than the app.
+
 ## [2.1.0] - 2026-09-07
 
 ### Added
