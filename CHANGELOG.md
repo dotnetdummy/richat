@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-09-09
+
+### Added
+
+- Trusted JWT login via a reverse-proxy header (`AUTH_TRUSTED_JWT_HEADER`). When that header is present, visitors are signed in automatically.
+
 ## [2.1.1] - 2026-09-08
 
 ### Added

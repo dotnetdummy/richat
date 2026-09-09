@@ -12,7 +12,7 @@ The app runs as a PWA. It supports public and private channels, threads, emoji r
 ## Requirements
 
 - Docker with Compose
-- A login provider: a Steam Web API key, email/password, or a generic OAuth2 provider (exactly one)
+- A login provider: a Steam Web API key, email/password, a generic OAuth2 provider, or a trusted JWT reverse-proxy header (exactly one)
 - VAPID keys (push notifications)
 - HTTPS in production (PWA, push, and microphone)
 
@@ -28,7 +28,7 @@ Fill in `.env`:
 
 1. Set `POSTGRES_PASSWORD` to a strong password.
 2. Set `APP_URL` to the public origin (`https://chat.example.com`).
-3. Set `INITIAL_ADMIN` to your email (email/password or OAuth2) or Steam persona name. The first matching sign-in becomes admin.
+3. Set `INITIAL_ADMIN` to your email (email/password, OAuth2, or trusted JWT) or Steam persona name. The first matching sign-in becomes admin.
 4. Generate `AUTH_SECRET` and paste it:
 
    ```bash
@@ -45,7 +45,7 @@ Fill in `.env`:
 
    Set `VAPID_SUBJECT` to a `mailto:` address or `https:` URL that identifies this app. Keep the same key pair; rotating it invalidates every device's push subscription.
 
-6. Enable **exactly one** login provider: `STEAM_API_KEY`, `AUTH_EMAIL_PASSWORD=true`, or OAuth2 (`OAUTH2_CLIENT_ID` + `OAUTH2_CLIENT_SECRET` + a discovery URL or explicit endpoints). The app refuses to start with zero or more than one.
+6. Enable **exactly one** login provider: `STEAM_API_KEY`, `AUTH_EMAIL_PASSWORD=true`, OAuth2 (`OAUTH2_CLIENT_ID` + `OAUTH2_CLIENT_SECRET` + a discovery URL or explicit endpoints), or `AUTH_TRUSTED_JWT_HEADER`. The app refuses to start with zero or more than one.
 
 Then:
 
@@ -65,7 +65,7 @@ Deploy this `docker-compose.yml` as a stack that **pulls** `RICHAT_IMAGE`. Do no
 
 ### Reverse proxy
 
-Terminate TLS in front of port 1987. Set `APP_URL` (and `AUTH_TRUSTED_ORIGINS` if the origin list is wider than `APP_URL`) to the public HTTPS URL. Production needs HTTPS for install-as-app, push, and huddle microphones.
+Terminate TLS in front of port 1987. Set `APP_URL` (and `AUTH_TRUSTED_ORIGINS` if the origin list is wider than `APP_URL`) to the public HTTPS URL. Production needs HTTPS for install-as-app, push, and huddle microphones. Trusted JWT login (`AUTH_TRUSTED_JWT_HEADER`) is for this proxy: it must authenticate the visitor and set the named header; Richat does not verify the JWT signature, so the app must not be reachable except through that proxy.
 
 ## Upgrade
 
@@ -97,6 +97,7 @@ Put these in `.env`. See `.env.example`.
 | `OAUTH2_USERINFO_URL`                                 | No                                   | Explicit userinfo endpoint                            |
 | `OAUTH2_SCOPES`                                       | No (default `openid,profile,email`)  | Comma-separated scopes                                |
 | `OAUTH2_PROVIDER_NAME`                                | No (default `OAuth`)                 | Login button label                                    |
+| `AUTH_TRUSTED_JWT_HEADER`                             | One login provider                   | Reverse-proxy JWT login (HTTP header name)            |
 | `VAPID_PUBLIC_KEY`                                    | Yes                                  | Web Push                                              |
 | `VAPID_PRIVATE_KEY`                                   | Yes                                  | Web Push                                              |
 | `VAPID_SUBJECT`                                       | Yes                                  | Web Push subject (`mailto:` or `https:` URL)          |
@@ -113,11 +114,13 @@ Put these in `.env`. See `.env.example`.
 | `TURN_HOST` / `TURN_USERNAME` / `TURN_CREDENTIAL`     | No                                   | TURN for voice on hard NATs. See [`docs/turn.md`](docs/turn.md). |
 | `MAX_VOICE_PARTICIPANTS`                              | No (default `8`)                     | Max people in a voice huddle                          |
 
+With trusted JWT, the reverse proxy authenticates the visitor and sets the named header to a JWT. Richat reads `sub`, `email`, and `name` from the payload and does not verify the signature — the app must not be reachable except through that proxy.
+
 With email/password there is no email infrastructure: password resets go through **Admin → Users → Reset password**, which generates a random password the admin hands over out-of-band; the user can then change it in Settings → Profile.
 
 ## Privacy
 
-- Emails are hashed at registration; the plaintext is never stored. Steam and OAuth2 use bcrypt. Email/password uses a deterministic HMAC-SHA256 (keyed with `AUTH_SECRET`) because sign-in must look the user up by email.
+- Emails are hashed at registration; the plaintext is never stored. Steam, OAuth2, and trusted JWT use bcrypt. Email/password uses a deterministic HMAC-SHA256 (keyed with `AUTH_SECRET`) because sign-in must look the user up by email.
 - Sessions store no IP address and no user agent.
 - Whitelist invites hold a plaintext email, Steam name, or `@domain`. Person rows are consumed at first sign-in. Domain rows stay until they expire. Every row is purged at its chosen TTL (24 hours to 1 year).
 - The Steam ID in `auth.account` stays in plaintext: it is the login identity and is needed for lookup at sign-in.

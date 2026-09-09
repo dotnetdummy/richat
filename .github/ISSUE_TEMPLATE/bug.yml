@@ -21,7 +21,7 @@ body:
     attributes:
       label: Image tag
       description: Value of RICHAT_IMAGE, or `dotnetdummy/richat:latest` if unset.
-      placeholder: dotnetdummy/richat:2.0.0
+      placeholder: dotnetdummy/richat:2.2.0
     validations:
       required: true
   - type: dropdown
