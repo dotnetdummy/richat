@@ -102,6 +102,7 @@ Put these in `.env`. See `.env.example`.
 | `VAPID_PRIVATE_KEY`                                   | Yes                                  | Web Push                                              |
 | `VAPID_SUBJECT`                                       | Yes                                  | Web Push subject (`mailto:` or `https:` URL)          |
 | `KLIPY_APP_KEY`                                       | No                                   | KLIPY GIF search. Without it, only uploaded GIFs.     |
+| `KLIPY_PRIVACY`                                       | No (default off)                    | `true` keeps server-side KLIPY search and the CDN proxy. |
 | `PORT`                                                | No (default `1987`)                  | Host port mapped to the app                           |
 | `INITIAL_ADMIN`                                       | First setup                          | Email or Steam name of the first admin                |
 | `POSTGRES_USER` / `POSTGRES_DB`                       | No (default `richat`)                | Postgres role and database name                       |
@@ -127,6 +128,7 @@ With email/password there is no email infrastructure: password resets go through
 - A daily retention job (and on demand from Admin → Retention) purges old unpinned and pinned messages, orphan uploads, expired sessions, stale push subscriptions, and inactive accounts. The owner and system user are never auto-deleted. Deleted accounts keep chat shown as Deleted user.
 - Push payloads are encrypted to the device. Each user can hide channel names, sender names, and message text from push payloads (Settings → Notifications).
 - Link previews are fetched server-side (public addresses only) and cached in memory only.
+- Optional GIF search talks to KLIPY from the browser by default. Set `KLIPY_PRIVACY=true` to send search and GIF bytes through the server so KLIPY does not see user IPs. Privacy mode is not KLIPY Terms of Service compliant.
 - The TURN sidecar runs with stdout logging off, because coturn allocation logs contain client IPs.
 - Messages and files are stored unencrypted in PostgreSQL; there is no end-to-end encryption. Database dumps contain plaintext content.
 

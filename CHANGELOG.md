@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-09-10
+
+### Added
+
+- `KLIPY_PRIVACY=true` restores server-side KLIPY search, the GIF proxy, mixed Explore results.
+- Bare email addresses in messages become mailto links.
+
+### Changed
+
+- KLIPY GIF search and images load in the browser by default. Explore is KLIPY-only, with a Search KLIPY field. Existing operators who want the previous IP-hiding proxy must set `KLIPY_PRIVACY=true`.
+- Noise suppression in Settings → Voice & Video runs on this device and falls back to the browser if that cannot start.
+
+### Fixed
+
+- Voice huddle ICE from a rolled-back or later offer is held until the remote SDP matches, so `addIceCandidate` no longer throws during glare or renegotiation.
+- Voice activity and speaking rings use an AudioWorklet clock instead of the deprecated ScriptProcessorNode.
+- Screen-share overlay selects the only matching display automatically.
+
 ## [2.2.0] - 2026-09-09
 
 ### Added
