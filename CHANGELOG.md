@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.5.0] - 2026-09-18
+
+### Added
+
+- Word Bomb on the huddle: type a word that contains the shown syllable before the timer; last player with lives wins.
+- Pictionary tweaks: first player in the lobby chooses 1–8 rounds and starts the game.
+- Mute and volume for screen-share audio on the huddle stage and pop-out.
+
+### Changed
+
+- Poker raise uses +/- by the big blind plus Min / half-pot / pot / all-in presets instead of a slider.
+- Poker shows remaining players' hole cards on their seats at a contested showdown.
+- Poker cards, felt, deal/showdown motion, and the turn countdown are easier to follow.
+
+### Fixed
+
+- Pictionary guesses overlay no longer clips the latest line when more than two guesses are in.
+
 ## [2.4.0] - 2026-09-11
 
 ### Added
