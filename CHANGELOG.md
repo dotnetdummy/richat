@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.0] - 2026-09-20
+
+### Added
+
+- Switch microphone, speaker, and camera from the huddle header without opening Settings. The dock stays mute, deafen, and leave.
+
+### Fixed
+
+- Trusted JWT login recovers with a full reload when the reverse-proxy token expires.
+- Voice device pickers show Default instead of a blank value.
+
 ## [2.5.0] - 2026-09-18
 
 ### Added
