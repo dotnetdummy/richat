@@ -55,7 +55,7 @@ docker compose up -d
 
 Open `http://localhost:1987` (or your `APP_URL`) and sign in as `INITIAL_ADMIN`. After that, manage the whitelist from **Admin** (Shield icon next to the logo in the channel menu). The seed creates public channel `general`.
 
-Chat data lives in the `pgdata` volume. `GET /health` is the health check. Pending migrations run when the app starts.
+Chat data lives in the `pgdata` volume. `GET /health` returns JSON readiness (`engine`, `database`, `listener`) and answers 503 until the engine has started or while the database is unreachable. Pending migrations run when the app starts.
 
 Override the image with `RICHAT_IMAGE` if you want a pinned tag (default `dotnetdummy/richat:latest`). Testers can follow the `dev` branch with `dotnetdummy/richat:nightly`.
 
@@ -107,6 +107,9 @@ Put these in `.env`. See `.env.example`.
 | `INITIAL_ADMIN`                                       | First setup                          | Email or Steam name of the first admin                |
 | `POSTGRES_USER` / `POSTGRES_DB`                       | No (default `richat`)                | Postgres role and database name                       |
 | `DB_MIGRATE_ON_START`                                 | No (default `true`)                  | Run pending migrations when the app starts            |
+| `PG_POOL_MAX`                                         | No (default `20`)                    | Database connection pool size                         |
+| `PG_STATEMENT_TIMEOUT_MS`                             | No (default `30000`)                 | Per-query timeout in ms (`0` disables)                |
+| `LOG_FORMAT`                                          | No (`json` in production)            | `json` or `pretty`                                    |
 | `RICHAT_IMAGE`                                        | No                                   | App image (`latest`, a version, or `nightly`)         |
 | `EMAIL_SALT_ROUNDS`                                   | No (default `10`)                    | bcrypt rounds for hashed emails                       |
 | `MESSAGE_RETENTION_DAYS`                              | No (default `90`)                    | Last-edit age after which unpinned messages are deleted |
@@ -114,6 +117,8 @@ Put these in `.env`. See `.env.example`.
 | `USER_RETENTION_DAYS`                                 | No (default `365`)                   | Inactivity after which accounts are deleted (`0` off) |
 | `TURN_HOST` / `TURN_USERNAME` / `TURN_CREDENTIAL`     | No                                   | TURN for voice on hard NATs. See [`docs/turn.md`](docs/turn.md). |
 | `MAX_VOICE_PARTICIPANTS`                              | No (default `8`)                     | Max people in a voice huddle                          |
+
+Generic OAuth2 sign-in uses `/api/auth/callback/oauth2` with PKCE. If the identity provider still lists `/api/auth/oauth2/callback/oauth2`, update that redirect URI before upgrading.
 
 With trusted JWT, the reverse proxy authenticates the visitor and sets the named header to a JWT. Richat reads `sub`, `email`, and `name` from the payload and does not verify the signature — the app must not be reachable except through that proxy.
 

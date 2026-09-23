@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.7.0] - 2026-09-23
+
+### Added
+
+- `PG_POOL_MAX` (default 20) sets the database pool size. `PG_STATEMENT_TIMEOUT_MS` (default 30000, `0` disables) caps each query.
+- `/health` returns JSON readiness (`engine`, `database`, `listener`) and answers 503 until the engine has started or while the database is unreachable.
+- `LOG_FORMAT=json|pretty` (JSON by default in production). Production logs a metrics line each minute: open SSE streams, pool usage, and message load times.
+
+### Changed
+
+- Dependencies are now updated to latest, including Material UI 9, Vite 8, and a newer Nitro nightly. Generic OAuth2 sign-in now uses `/api/auth/callback/oauth2` with PKCE on. Update the identity provider redirect URI if it still points at `/api/auth/oauth2/callback/oauth2`.
+- The Richat Overlay helper is a Tauri app, so the macOS and Windows downloads are much smaller. macOS may ask again for Input Monitoring and Accessibility, because the app identity changed.
+- The server validates env values at boot and refuses to start with a list of every malformed setting (numbers, booleans, URLs, `ICE_SERVERS`, partial VAPID keys). Missing VAPID keys only log a warning.
+- Graceful shutdown on `SIGTERM`/`SIGINT`: pending last-seen writes are flushed and database connections are closed (5 s limit).
+- Migrations take a Postgres advisory lock, so two containers starting together no longer race.
+- Upgrade runs two migrations: `0005_slim_channel_notify` (smaller channel change notifications) and `0006_thread_and_retention_indexes` (thread and retention indexes; drops indexes duplicated by primary keys).
+- Retention deletes in batches of 1000 rows to avoid long table locks.
+- Uploaded files, GIFs, sounds, avatars, and emojis support `ETag`/304 and byte ranges, so audio and video seeking does not re-download the file.
+- Sessions are cached in memory for up to 30 seconds; role changes and removed users apply immediately.
+- Games and party mode load their code only when active in the joined huddle.
+- The Docker image no longer installs a second copy of the dependencies; the server output is self-contained.
+- Reactions and file attaches reload the message without thread and quote queries.
+
+### Fixed
+
+- The overlay window’s macOS permission note is hidden on Windows and Linux.
+- Realtime recovers after the Postgres listener connection drops: it reconnects with backoff and clients refetch channels, messages, users, and voice state.
+
 ## [2.6.0] - 2026-09-20
 
 ### Added
