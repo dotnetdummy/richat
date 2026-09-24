@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.7.1] - 2026-09-24
+
+### Fixed
+
+- Linux overlay AppImage no longer bundles `libwayland-*`, so Fedora / newer Mesa hosts paint the UI instead of a blank window with `EGL_BAD_ALLOC` (WebKitWebProcess).
+- Linux overlay no longer aborts when annotations start (avoids `tao`’s click-through unwrap on Wayland by setting the GTK input shape directly).
+- Linux overlay defaults to the X11/XWayland GDK backend so it can cover the shared monitor while staying transparent (native Wayland fullscreen made the overlay opaque).
+
 ## [2.7.0] - 2026-09-23
 
 ### Added
