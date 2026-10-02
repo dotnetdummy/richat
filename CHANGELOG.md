@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.8.0] - 2026-10-02
+
+### Added
+
+- Members (⌘U / Ctrl+U) lists people in the channel, grouped Online, Idle, and Offline. A focused tab is Online; a background tab is Idle. Public channels list everyone on the server; private channels list participants. Desktop keeps the list beside the channel and remembers whether it is open. Phones open it from the header. The button tooltip includes how many are online.
+- On a phone, the channel menu shows a dot when another channel is unread, using the same mute and mention rules as the channel list.
+- Admin overview, users, retention, and media tables sort by column.
+
+### Changed
+
+- Who is here now opens Members instead of only the people viewing the channel or in the huddle.
+
+### Fixed
+
+- Saving an edit, or pressing Escape while editing, returns focus to the composer.
+
 ## [2.7.1] - 2026-09-24
 
 ### Fixed
