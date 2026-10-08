@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.8.1] - 2026-10-08
+
+### Added
+
+- Spoilers hide text until it is clicked. Wrap it in `||`, or select it and press ⌘⇧S / Ctrl+Shift+S. Quotes, thread previews, the message actions sheet, and push notifications show the word spoiler.
+
+### Fixed
+
+- On iPhone and iPad, the @ mention list and other menus line up with the control that opened them while the keyboard is open.
+
 ## [2.8.0] - 2026-10-02
 
 ### Added
