@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.9.0] - 2026-10-17
+
+### Added
+
+- Search messages with ⌘⇧F / Ctrl+Shift+F, or the search icon in the channel header. Results cover every channel you can read, or only the open channel. Spoilers stay hidden in the results. Opening a result jumps to that message.
+- Jump to a message from a quote that is not on screen, a copied message link, or a pinned message. Copy link is on the message toolbar and in the message actions menu.
+- Composer text is kept per channel and per thread in this browser until you send or clear it, including after a refresh.
+- `__text__` is underlined, and a message can be at most 8,000 characters.
+- Fenced code blocks are colored by language, and each block has a copy button.
+
+### Changed
+
+- Upgrade runs `0007_message_text_search` (a search index on message text).
+
 ## [2.8.1] - 2026-10-08
 
 ### Added
